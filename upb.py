@@ -1,24 +1,36 @@
-from subprocess import Popen
-import argparse
+from subprocess import *
+import argparse, os
 
-parser = argparse.ArgumentParser()
-
-parser.add_argument('mode')
-parser.add_argument('-plugin')
-parser.add_argument('-output')
-parser.add_argument('-versions')
-args = parser.parse_args()
-
-
-if(args.mode=="build"):
-    versions = args.-versions.split(",")
-    
+def build(args):
+    versions = args.versions.split(",")
+    plugin = ' -Plugin="{}"'.format(args.plugin)
+    package = ' -Package="{}"'.format(args.output)
     for version in versions:
-        p = Popen(['UE_{}\Engine\Build\BatchFiles\RunUAT.bat'.format(version), BuildPlugin, -Plugin=args.-plugin, -Package=args.-output, -rocket], stdout=PIPE, stderr=PIPE)
-        output, errors = p.communicate()
+        path = os.path.join(os.environ['UEINSTALL'], 'UE_{}\Engine\Build\BatchFiles\RunUAT.bat'.format(version))
+        buildplugin = " BuildPlugin"
+        print(path + buildplugin + plugin + package)
+        os.system(path + buildplugin + plugin + package)
+        #p = Popen([path, buildplugin, plugin, package], stdout=PIPE, stderr=PIPE, stdin=PIPE)
+        #output, errors = p.communicate()
+        #p.wait()
 
-elif(args.mode=="push"):
+def push(args):
     print("push mode")
 
+parser = argparse.ArgumentParser()
+subparsers = parser.add_subparsers()
 
+buildparser = subparsers.add_parser("build")
+buildparser.add_argument('-plugin')
+buildparser.add_argument('-output')
+buildparser.add_argument('-versions')
+buildparser.set_defaults(func=build)
 
+pushparser = subparsers.add_parser("push")
+pushparser.set_defaults(func=push)
+
+args = parser.parse_args()
+try:
+    args.func(args)
+except AttributeError:
+    parser.error("too few arguments")
