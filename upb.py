@@ -11,10 +11,12 @@ args = parser.parse_args()
 
 
 if(args.mode=="build"):
-    versions = args.-versions.split(",")
-    
+    plugin = args.plugin
+    output = args.output
+    versions = args.versions.split(",")
+
     for version in versions:
-        p = Popen(['UE_{}\Engine\Build\BatchFiles\RunUAT.bat'.format(version), BuildPlugin, -Plugin=args.-plugin, -Package=args.-output, -rocket], stdout=PIPE, stderr=PIPE)
+        p = Popen(['UE_{}\Engine\Build\BatchFiles\RunUAT.bat'.format(version), BuildPlugin, -Plugin=plugin, -Package=output, -rocket], stdout=PIPE, stderr=PIPE)
         output, errors = p.communicate()
 
 elif(args.mode=="push"):
