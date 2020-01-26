@@ -1,4 +1,3 @@
-from subprocess import *
 import argparse, os
 
 def build(args):
@@ -8,11 +7,7 @@ def build(args):
     for version in versions:
         path = os.path.join(os.environ['UEINSTALL'], 'UE_{}\Engine\Build\BatchFiles\RunUAT.bat'.format(version))
         buildplugin = " BuildPlugin"
-        print(path + buildplugin + plugin + package)
         os.system(path + buildplugin + plugin + package)
-        #p = Popen([path, buildplugin, plugin, package], stdout=PIPE, stderr=PIPE, stdin=PIPE)
-        #output, errors = p.communicate()
-        #p.wait()
 
 def push(args):
     print("push mode")
