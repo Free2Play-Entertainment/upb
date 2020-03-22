@@ -3,7 +3,7 @@ import argparse, os
 def build(args):
     versions = args.versions.split(",")
     plugin = ' -Plugin="{}"'.format(args.plugin)
-    package = ' -Package="{}"'.format(args.output)
+    package = ' -Package="{}"'.format(args.output.rstrip('\\'))
     for version in versions:
         path = os.path.join(os.environ['UEINSTALL'], 'UE_{}\Engine\Build\BatchFiles\RunUAT.bat'.format(version))
         buildplugin = " BuildPlugin"
