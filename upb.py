@@ -6,8 +6,7 @@ def build(args):
     package = ' -Package="{}"'.format(args.output.rstrip('\\'))
     for version in versions:
         path = os.path.join(os.environ['UEINSTALL'], 'UE_{}\Engine\Build\BatchFiles\RunUAT.bat'.format(version))
-        buildplugin = " BuildPlugin"
-        os.system(path + buildplugin + plugin + package)
+        os.system(path + " BuildPlugin" + plugin + package + " -Rocket")
 
 def push(args):
     print("push mode")
